@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eno Location - Espas Admin</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">🚗 Eno Location - Admin</div>
+    <nav>
+      <a href="index.html">Ale sou Sit la</a>
+    </nav>
+  </header>
+
+  <div class="container" style="max-width: 600px; margin: 40px auto; padding: 20px;">
+    <h1>Espas Pèsonèl Admin</h1>
+    <p>Isit la ou ka ajoute nouvo machin, modifye pri yo ($80 oswa $150), oswa jere lis veyikil yo.</p>
+    
+    <div class="admin-form" style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-top: 20px;">
+      <h3>Ajoute oswa Modifye Machin</h3>
+      <input type="text" id="car-name" placeholder="Non Machin (pa egzanp: Toyota Land Cruiser Zo Reken)" style="width:100%; padding:10px; margin-bottom:10px;">
+      <input type="number" id="car-price" placeholder="Pri pa jou an dola ($80 oswa $150)" style="width:100%; padding:10px; margin-bottom:10px;">
+      <input type="text" id="car-desc" placeholder="Deskripsyon machin nan" style="width:100%; padding:10px; margin-bottom:10px;">
+      <input type="text" id="car-img" placeholder="Lyen foto machin nan (Image URL)" style="width:100%; padding:10px; margin-bottom:15px;">
+      <button id="save-car-btn" class="btn-primary" style="width:100%; padding:10px; background: #0070f3; color: white; border: none; border-radius: 5px; cursor: pointer;">Anrejistre Machin nan</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase } from './src/main.js';
+
+    document.getElementById('save-car-btn').addEventListener('click', async () => {
+      const name = document.getElementById('car-name').value;
+      const price = parseFloat(document.getElementById('car-price').value);
+      const description = document.getElementById('car-desc').value;
+      const image_url = document.getElementById('car-img').value;
+
+      if (!name || !price) {
+        alert('Tanpri mete non machin nan ak pri a!');
+        return;
+      }
+
+      const { error } = await supabase.from('items').insert([{ name, price, description, image_url }]);
+
+      if (error) {
+        alert('Erè pandan n t ap anrejistre l: ' + error.message);
+      } else {
+        alert('Machin nan anrejistre avèk siksè sou sit la!');
+        window.location.reload();
+      }
+    });
+  </script>
+</body>
+</html>
